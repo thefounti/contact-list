@@ -12,7 +12,7 @@ export default Contacts = (props) => {
 
     const [state, setState] = useState({
         contacts: [],
-        loading: true,
+        loading: false,
         error: false,
         strError: ""
     });
@@ -32,7 +32,7 @@ export default Contacts = (props) => {
                 strError: "",
             })
         } catch (err) {
-            // console.log(err);
+            console.log(err);
             setState({
                 ...state,
                 loading: false,
@@ -45,14 +45,14 @@ export default Contacts = (props) => {
     const renderContact = ({ item }) => {
         const { name, avatar, phone } = item;
 
-        return <ContactListItem name={name} avatar={avatar} phone={phone} onPress={() => navigate('Profile')} />
+        return <ContactListItem name={name} avatar={avatar} phone={phone} onPress={() => navigate('Profile', { contact: item })} />
     }
 
     const contactsSorted = state.contacts.sort((a, b) => a.name.localeCompare(b.name));
     return (
         <View style={styles.container}>
-            {state.loading && <ActivityIndicator size={"large"} />}
-            {state.error && <Text>Error..{state.strError}.</Text>}
+            {/* {state.loading && <ActivityIndicator size={"large"} />} */}
+            {state.error && <Text>Error: {state.strError}.</Text>}
             {!state.loading &&
                 !state.error && (
                     <FlatList

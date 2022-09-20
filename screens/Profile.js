@@ -8,22 +8,25 @@ import { fetchRandomContact } from "../utils/api";
 
 import colors from "../utils/colors";
 
-export default Profile = () => {
+export default Profile = ({ navigation }) => {
     const [state, setState] = useState({
         contact: {},
     })
 
-    const { avatar, name, email, phone, cell } = state.contact;
+    const { state: { params } } = navigation;
+    const { contact } = params;
 
-    useEffect(() => {
-        fetchRandomContactAsync();
-    }, [])
+    const { avatar, name, email, phone, cell } = contact;
 
-    const fetchRandomContactAsync = async () => {
-        const contact = await fetchRandomContact();
+    // useEffect(() => {
+    //     fetchRandomContactAsync();
+    // }, [])
 
-        setState({ ...state, contact });
-    }
+    // const fetchRandomContactAsync = async () => {
+    //     const contact = await fetchRandomContact();
+
+    //     setState({ ...state, contact });
+    // }
 
     return (
         <View style={styles.container}>
