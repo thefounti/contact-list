@@ -7,6 +7,8 @@ import { fetchContacts } from '../utils/api';
 
 const keyExtractor = ({ phone }) => phone;
 
+
+
 export default Contacts = (props) => {
     const { navigation: { navigate } } = props;
 
@@ -72,3 +74,10 @@ const styles = StyleSheet.create({
         flex: 1,
     }
 })
+
+Contacts.navigationOptions = {
+    title: 'Contacts',
+    headerStyle: {
+        backgroundColor: 'white',
+    }
+}

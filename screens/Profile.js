@@ -57,3 +57,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     }
 })
+
+Profile.navigationOptions = ({ navigation: { state: { params } } }) => {
+    const { contact: { name } } = params;
+    return {
+        title: name.split(' ')[0],
+        headerTintColor: 'white',
+    }
+}
