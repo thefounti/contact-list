@@ -5,6 +5,8 @@ import { StyleSheet, Text, View, FlatList, ActivityIndicator } from "react-nativ
 import { fetchContacts } from "../utils/api";
 
 import ContactThumbnail from "../components/ContactThumbnail";
+import colors from "../utils/colors";
+import { MaterialIcons } from '@expo/vector-icons';
 
 const keyExtractor = ({ phone }) => phone;
 
@@ -76,20 +78,30 @@ export default Favorites = (props) => {
 
 }
 
-Favorites.navigationOptions = {
-    title: 'Favorites',
-    headerStyle: {
-        backgroundColor: 'white',
+Favorites.navigationOptions = ({ navigation: { navigate } }) => {
+    return {
+        title: 'Favorites',
+        headerStyle: {
+            backgroundColor: 'white',
+        },
+        headerLeft: (
+            <MaterialIcons
+                name="menu"
+                size={24}
+                style={{ color: colors.black, marginLeft: 10 }}
+                onPress={() => navigate('DrawerToggle')}
+            />
+        )
     }
 }
 
 const styles = StyleSheet.create({
-    container:{
-        backgroundColor:'white',
-        justifyContent:'center',
-        flex:1,
+    container: {
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        flex: 1,
     },
-    list:{
-        alignItems:"center",
+    list: {
+        alignItems: "center",
     }
 });

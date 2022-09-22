@@ -5,6 +5,7 @@ import ContactThumbnail from "../components/ContactThumbnail";
 
 import colors from "../utils/colors";
 import { fetchUserContact } from "../utils/api";
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default User = () => {
 
@@ -62,7 +63,25 @@ const styles = StyleSheet.create({
     }
 })
 
-User.navigationOptions = {
-    title: 'Me',
-    headerTintColor: 'white',
+User.navigationOptions = ({ navigation: { navigate } }) => {
+    return {
+        title: 'Me',
+        headerTintColor: 'white',
+        headerLeft: (
+            <MaterialIcons
+                name="menu"
+                size={24}
+                style={{ color: colors.black, marginLeft: 10 }}
+                onPress={() => navigate('DrawerToggle')}
+            />
+        ),
+        headerRight: (
+            <MaterialIcons
+                name="settings"
+                size={24}
+                style={{ color: 'white', marginRight: 10 }}
+                onPress={() => navigate('Options')}
+            />
+        ),
+    }
 }

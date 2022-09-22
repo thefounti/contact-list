@@ -5,6 +5,9 @@ import ContactListItem from '../components/ContactListItem';
 
 import { fetchContacts } from '../utils/api';
 
+import { MaterialIcons } from '@expo/vector-icons';
+import colors from "../utils/colors";
+
 const keyExtractor = ({ phone }) => phone;
 
 
@@ -75,9 +78,19 @@ const styles = StyleSheet.create({
     }
 })
 
-Contacts.navigationOptions = {
-    title: 'Contacts',
-    headerStyle: {
-        backgroundColor: 'white',
+Contacts.navigationOptions = ({ navigation: { navigate } }) => {
+    return {
+        title: 'Contacts',
+        headerStyle: {
+            backgroundColor: 'white',
+        },
+        headerLeft: (
+            <MaterialIcons
+                name="menu"
+                size={24}
+                style={{ color: colors.black, marginLeft: 10 }}
+                onPress={() => navigate('DrawerToggle')}
+            />
+        )
     }
 }
