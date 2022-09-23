@@ -6,32 +6,45 @@ import ContactThumbnail from "../components/ContactThumbnail";
 import colors from "../utils/colors";
 import { fetchUserContact } from "../utils/api";
 import { MaterialIcons } from '@expo/vector-icons';
+import store from "../store";
 
 export default User = () => {
 
     const [state, setState] = useState({
-        user: [],
-        loading: true,
-        error: false,
-        strError: '',
+        user: store.getState().user,
+        loading: store.getState().isFetchingUser,
+        error: store.getState().error,
+        strError: store.getState().strError,
     });
 
     useEffect(() => {
+        const unsuscribe=store.onChange(() => {
+            setState({
+                user:store.getState().user,
+                loading:store.getState().isFetchingUser,
+                error:store.getState().error,
+                strError:store.getState().error,
+            })
+        })
         fetchUserContactAsync();
+
+        return () =>{
+            unsuscribe();
+        }
     }, [])
 
     const fetchUserContactAsync = async () => {
         try {
             const user = await fetchUserContact();
-            setState({
-                ...state,
-                loading: false,
-                user
+            store.setState({
+                isFetchingUser: false,
+                user,
+                error:false,
+                strError:''
             })
         } catch (err) {
-            setState({
-                ...state,
-                loading: false,
+            store.setState({
+                isFetchingUser: false,
                 error: true,
                 strError: err.toString(),
             })

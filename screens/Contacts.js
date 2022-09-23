@@ -26,15 +26,17 @@ export default Contacts = (props) => {
     useEffect(() => {
         const unsuscribe = store.onChange(() => {
             setState({
-                ...state,
-                loading:store.getState().
+                contacts:store.getState().contacts,
+                loading:store.getState().isFetchingContacts,
+                error:store.getState().error,
+                strError:store.getState().strError,
             })
         })
 
         ObtenerContactosAsync();
 
         return ()=>{
-
+            unsuscribe();
         }
 
     }, [])
@@ -67,7 +69,7 @@ export default Contacts = (props) => {
     const contactsSorted = state.contacts.sort((a, b) => a.name.localeCompare(b.name));
     return (
         <View style={styles.container}>
-            {/* {state.loading && <ActivityIndicator size={"large"} />} */}
+            {state.loading && <ActivityIndicator size={"large"} />}
             {state.error && <Text>Error: {state.strError}.</Text>}
             {!state.loading &&
                 !state.error && (

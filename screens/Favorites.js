@@ -7,37 +7,47 @@ import { fetchContacts } from "../utils/api";
 import ContactThumbnail from "../components/ContactThumbnail";
 import colors from "../utils/colors";
 import { MaterialIcons } from '@expo/vector-icons';
+import store from "../store";
 
 const keyExtractor = ({ phone }) => phone;
 
 export default Favorites = (props) => {
     const [state, setState] = useState({
-        contacts: [],
-        loading: true,
-        error: false,
-        strError: '',
+        contacts: store.getState().contacts,
+        loading: store.getState().isFetchingContacts,
+        error: store.getState().error,
+        strError: store.getState().strError,
     })
 
     useEffect(() => {
-        fetchContactsAsync();
-        // return () => {
-        //     second
-        // }
+        const { contacts } = state;
+        const unsuscribe = store.onChange(() => {
+            setState({
+                contacts: store.getState().contacts,
+                loading: store.getState().isFetchingContacts,
+                error: store.getState().error,
+                strError: store.getState().strError,
+            })
+        })
+        if (contacts.length === 0){
+            fetchContactsAsync();
+        }
+        return () => {
+            unsuscribe();
+        }
     }, [])
 
     const fetchContactsAsync = async () => {
         try {
             const contacts = await fetchContacts();
 
-            setState({
-                ...state,
+            store.setState({
                 contacts,
-                loading: false,
+                isFetchingContacts: false,
             })
         } catch (err) {
-            setState({
-                ...state,
-                loading: false,
+            store.setState({
+                isFetchingContacts: false,
                 error: true,
                 strError: err.toString()
             })
