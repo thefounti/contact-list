@@ -7,6 +7,7 @@ import { fetchContacts } from '../utils/api';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from "../utils/colors";
+import store from "../store";
 
 const keyExtractor = ({ phone }) => phone;
 
@@ -16,31 +17,41 @@ export default Contacts = (props) => {
     const { navigation: { navigate } } = props;
 
     const [state, setState] = useState({
-        contacts: [],
-        loading: false,
-        error: false,
-        strError: ""
+        contacts: store.getState().contacts,
+        loading: store.getState().isFetchingContacts,
+        error: store.getState().error,
+        strError: store.getState().strError,
     });
 
     useEffect(() => {
+        const unsuscribe = store.onChange(() => {
+            setState({
+                ...state,
+                loading:store.getState().
+            })
+        })
+
         ObtenerContactosAsync();
+
+        return ()=>{
+
+        }
+
     }, [])
 
     const ObtenerContactosAsync = async () => {
         try {
             const contacts = await fetchContacts();
-            setState({
-                ...state,
+            store.setState({
                 contacts,
-                loading: false,
+                isFetchingContacts: false,
                 error: false,
                 strError: "",
             })
         } catch (err) {
             console.log(err);
-            setState({
-                ...state,
-                loading: false,
+            store.setState({
+                isFetchingContacts: false,
                 error: true,
                 strError: err.toString(),
             })
