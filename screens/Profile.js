@@ -8,15 +8,18 @@ import { fetchRandomContact } from "../utils/api";
 
 import colors from "../utils/colors";
 
+import store from "../store";
+
 export default Profile = ({ navigation }) => {
     const [state, setState] = useState({
         contact: {},
     })
 
     const { state: { params } } = navigation;
-    const { contact } = params;
+    const { id } = params;
+    // console.log("contact", contact);
 
-    const { avatar, name, email, phone, cell } = contact;
+    const { avatar, name, email, phone, cell } = store.getState().contacts.find(contact => contact.id === id);
 
     // useEffect(() => {
     //     fetchRandomContactAsync();
@@ -59,7 +62,11 @@ const styles = StyleSheet.create({
 })
 
 Profile.navigationOptions = ({ navigation: { state: { params } } }) => {
-    const { contact: { name } } = params;
+    const { id } = params;
+    // const { contact: { name } } = params;
+
+    const { name } = store.getState().contacts.find(contact => contact.id === id)
+
     return {
         title: name.split(' ')[0],
         headerTintColor: 'white',
